@@ -53,13 +53,13 @@ Node* buildTree(string str)
         Node* currNode = queue.front();
         queue.pop();
 
-        // Get the current Node's value from the string
+        // Get the current node's value from the string
         string currVal = ip[i];
 
         // If the left child is not null
         if(currVal != "N") {
 
-            // Create the left child for the current Node
+            // Create the left child for the current node
             currNode->left = newNode(stoi(currVal));
 
             // Push it to the queue
@@ -75,7 +75,7 @@ Node* buildTree(string str)
         // If the right child is not null
         if(currVal != "N") {
 
-            // Create the right child for the current Node
+            // Create the right child for the current node
             currNode->right = newNode(stoi(currVal));
 
             // Push it to the queue
@@ -105,54 +105,56 @@ struct Node
 
 class Solution {
 public:
-  bool isLeaf(Node * root) {
-  return !root -> left && !root -> right;
+// Leaf check karega bro
+bool isleaf(Node* root){
+    if((root->left==NULL and root->right==NULL)){
+        return true;
+    }
+    return false;
 }
-
-void addLeftBoundary(Node * root, vector < int > & res) {
-  Node * cur = root -> left;
-  while (cur) {
-    if (!isLeaf(cur)) res.push_back(cur -> data);
-    if (cur -> left) cur = cur -> left;
-    else cur = cur -> right;
-  }
+//left print karega bro
+void left(Node* root,vector<int> & ans){
+    if(root==NULL or isleaf(root)){
+        return;
+    }
+    ans.push_back(root->data);
+    if(root->left)left(root->left,ans);
+    else left(root->right,ans);
 }
-void addRightBoundary(Node * root, vector < int > & res) {
-  Node * cur = root -> right;
-  vector < int > tmp;
-  while (cur) {
-    if (!isLeaf(cur)) tmp.push_back(cur -> data);
-    if (cur -> right) cur = cur -> right;
-    else cur = cur -> left;
-  }
-  for (int i = tmp.size() - 1; i >= 0; --i) {
-    res.push_back(tmp[i]);
-  }
+//leaf print karega bro
+void leaf(Node* root,vector<int> & ans){
+    if(root==NULL){
+        return;
+    }
+    if(isleaf(root)){
+        ans.push_back(root->data);
+        return;
+    }
+    leaf(root->left,ans);
+    leaf(root->right,ans);
 }
-
-void addLeaves(Node * root, vector < int > & res) {
-  if (isLeaf(root)) {
-    res.push_back(root -> data);
+// right boundary bro
+void right(Node* root,vector<int>& ans){
+if(root==NULL or isleaf(root)){
     return;
-  }
-  if (root -> left) addLeaves(root -> left, res);
-  if (root -> right) addLeaves(root -> right, res);
 }
-
-vector < int > boundary(Node * root) {
-  vector < int > res;
-  if (!root) return res;
-
-  if (!isLeaf(root)) res.push_back(root -> data);
-
-  addLeftBoundary(root, res);
-
-  // add leaf Nodes
-  addLeaves(root, res);
-
-  addRightBoundary(root, res);
-  return res;
+if(root->right)right(root->right,ans);
+else right(root->left,ans);
+    ans.push_back(root->data);
 }
+    vector <int> boundary(Node *root)
+    {
+        vector<int> ans;
+        if(root==NULL){
+            return ans;
+        }
+        ans.push_back(root->data);
+        //Your code here
+        left(root->left,ans);
+        leaf(root->left,ans);
+        leaf(root->right,ans);
+        right(root->right,ans);
+    }
 };
 
 // { Driver Code Starts.
