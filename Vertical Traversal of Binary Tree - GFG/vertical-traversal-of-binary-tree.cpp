@@ -10,10 +10,10 @@ struct Node
     Node* right;
 };
 // Utility function to create a new Tree Node
-Node* newNode(int data)
+Node* newNode(int val)
 {
     Node* temp = new Node;
-    temp->data = data;
+    temp->data = val;
     temp->left = NULL;
     temp->right = NULL;
     
@@ -50,14 +50,14 @@ Node* buildTree(string str)
         Node* currNode = queue.front();
         queue.pop();
             
-        // Get the current node's dataue from the string
-        string currdata = ip[i];
+        // Get the current node's value from the string
+        string currVal = ip[i];
             
         // If the left child is not null
-        if(currdata != "N") {
+        if(currVal != "N") {
                 
             // Create the left child for the current node
-            currNode->left = newNode(stoi(currdata));
+            currNode->left = newNode(stoi(currVal));
                 
             // Push it to the queue
             queue.push(currNode->left);
@@ -67,13 +67,13 @@ Node* buildTree(string str)
         i++;
         if(i >= ip.size())
             break;
-        currdata = ip[i];
+        currVal = ip[i];
             
         // If the right child is not null
-        if(currdata != "N") {
+        if(currVal != "N") {
                 
             // Create the right child for the current node
-            currNode->right = newNode(stoi(currdata));
+            currNode->right = newNode(stoi(currVal));
                 
             // Push it to the queue
             queue.push(currNode->right);
@@ -103,44 +103,30 @@ class Solution
     //Function to find the vertical order traversal of Binary Tree.
     vector<int> verticalOrder(Node *root)
     {
-            map<int, map<int, vector< int>>> nodes;
-            queue<pair<Node*, pair<int, int>>> q;
-            vector<int> ans;
-            if (root == NULL)
-            {
-                return ans;
-            }
-            q.push(make_pair(root, make_pair(0, 0)));
-            while (!q.empty())
-            {
-                pair<Node*, pair<int, int>> temp;
-                temp = q.front();
-                q.pop();
-                Node *frontNode = temp.first;
-                int hd = temp.second.first;
-                int lv = temp.second.second;
-                nodes[hd][lv].push_back(frontNode->data);
-                if (frontNode->left)
-                {
-                    q.push(make_pair(frontNode->left, make_pair(hd - 1, lv + 1)));
-                }
-                if (frontNode->right)
-                {
-                    q.push(make_pair(frontNode->right,make_pair(hd + 1, lv + 1)));
-                }
-            }
-            for (auto i: nodes)
-            {
-                for (auto j: i.second)
-                {
-                        // ans.push_back(j.second);
-                        for(k:j.second){
-                            ans.push_back(k);
-                        }
-                }
-            }
-            return ans;
+        vector<int> ans;
+        //Your code here
+        map<int,map<int,vector<int> > >node;
+        queue<pair<Node*,pair<int,int>>> q;
+        q.push(make_pair(root,make_pair(0,0)));
+        while(!q.empty()){
+            pair<Node*,pair<int,int>> temp=q.front();
+            q.pop();
+            Node* fn=temp.first;
+            int hd=temp.second.first;
+            int lvl=temp.second.second;
+            node[hd][lvl].push_back(fn->data);
+            if(fn->left)q.push(make_pair(fn->left,make_pair(hd-1,lvl+1)));
+            if(fn->right)q.push(make_pair(fn->right,make_pair(hd+1,lvl+1)));
         }
+        for(auto p:node){
+            for(auto q:p.second){
+                for(auto r:q.second){
+                  ans.push_back(r);  
+                }
+            }
+        }
+        return ans;
+    }
 };
 
 
