@@ -114,22 +114,21 @@ class Solution
         queue<pair<Node*,int>>q;
         q.push(make_pair(root,0));
         while(!q.empty()){
-            auto it=q.front();
+            pair<Node*,int>temp=q.front();
             q.pop();
-            Node*node=it.first;
-            int hd=it.second;
-            if(mp.find(hd)==mp.end())mp[hd]=node->data;
-            if(node->left){
-                q.push(make_pair(node->left,hd-1));
+            int hd=temp.second;
+            Node* n=temp.first;
+            if(!mp.count(hd)){
+                mp.insert({hd,n->data});
             }
-            if(node->right){
-                q.push(make_pair(node->right,hd+1));
-            }
+            if(n->left)q.push(make_pair(n->left,hd-1));
+            if(n->right)q.push(make_pair(n->right,hd+1));
         }
-        for(auto i:mp){
-            ans.push_back(i.second);
+        for(auto r:mp){
+                ans.push_back(r.second);
         }
-        
+    
+        return ans;
     }
 
 };
