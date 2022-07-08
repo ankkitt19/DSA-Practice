@@ -113,7 +113,7 @@ class Solution{
           count++;
       }
       }
-      path.pop_back();
+    //   path.pop_back();
   }
   
     int sumK(Node *root,int k)
