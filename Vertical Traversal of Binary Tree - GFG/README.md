@@ -1,5 +1,5 @@
 # Vertical Traversal of Binary Tree
-## Medium 
+##  Medium 
 <div class="problem-statement">
                 <p></p><p><span style="font-size:18px">Given a Binary Tree, find the vertical traversal of it starting from the leftmost level to the rightmost level.<br>
 If there are multiple nodes passing through a vertical line, then they should be printed as they appear in <strong>level order</strong> traversal of the tree.</span></p>
