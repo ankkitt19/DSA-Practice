@@ -103,25 +103,25 @@ class Solution
     //Function to find the vertical order traversal of Binary Tree.
     vector<int> verticalOrder(Node *root)
     {
-        vector<int> ans;
-        //Your code here
-        map<int,map<int,vector<int> > >node;
-        queue<pair<Node*,pair<int,int>>> q;
+          vector<int>ans;
+        map<int,map<int,vector<int> > > node;
+        queue<pair<Node*,pair<int,int> > > q;
         q.push(make_pair(root,make_pair(0,0)));
-        while(!q.empty()){
-            pair<Node*,pair<int,int>> temp=q.front();
+        while(!q.empty())
+        {
+            pair<Node*,pair<int,int> >temp=q.front();
             q.pop();
-            Node* fn=temp.first;
             int hd=temp.second.first;
             int lvl=temp.second.second;
-            node[hd][lvl].push_back(fn->data);
-            if(fn->left)q.push(make_pair(fn->left,make_pair(hd-1,lvl+1)));
-            if(fn->right)q.push(make_pair(fn->right,make_pair(hd+1,lvl+1)));
+            Node* n=temp.first;
+            node[hd][lvl].push_back(n->data);
+            if(n->left)q.push(make_pair(n->left,make_pair(hd-1,lvl+1)));
+            if(n->right)q.push(make_pair(n->right,make_pair(hd+1,lvl+1)));
         }
         for(auto p:node){
             for(auto q:p.second){
                 for(auto r:q.second){
-                  ans.push_back(r);  
+                    ans.push_back(r);
                 }
             }
         }
