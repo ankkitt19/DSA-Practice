@@ -42,23 +42,23 @@ struct Node
 class Solution{
     public:
   
-    int find(int in[],int n,int element){
-        for(int i=0;i<n;i++){
-            if(in[i]==element){
-                return i;
-            }
-        }
-        return -1;
-    }
-    Node* solve(int in[],int pre[],int &index,int inorderstart,int inorderend,int n){
+    // int find(int in[],int n,int element){
+    //     for(int i=0;i<n;i++){
+    //         if(in[i]==element){
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // }
+    Node* solve(int in[],int pre[],int &index,int inorderstart,int inorderend,int n,unordered_map<int,int> &mp){
         if(index>=n or inorderstart>inorderend){
             return NULL;
         }
         int element=pre[index++];
         Node* root=new Node(element);
-        int position =find(in,n,element);
-        root->left=solve(in,pre,index,inorderstart,position-1,n);
-        root->right=solve(in,pre,index,position+1,inorderend,n);
+        int position =mp[element];
+        root->left=solve(in,pre,index,inorderstart,position-1,n,mp);
+        root->right=solve(in,pre,index,position+1,inorderend,n,mp);
         return root;
     }
     //   void mappping(int in[],int n, unordered_map<int,int> &mp){
@@ -66,13 +66,13 @@ class Solution{
     // }
     Node* buildTree(int in[],int pre[], int n)
     {  
-        // unordered_map<int,int> mp;
+        unordered_map<int,int> mp;
         int preind=0;
         // mappping(in,n,mp);
-        // for(int i=0;i<n;i++){
-        //     mp[in[i]]=i;
-        // }
-        Node* ans=solve(in,pre,preind,0,n-1,n);
+        for(int i=0;i<n;i++){
+            mp[in[i]]=i;
+        }
+        Node* ans=solve(in,pre,preind,0,n-1,n,mp);
         return ans;
     }
 };
